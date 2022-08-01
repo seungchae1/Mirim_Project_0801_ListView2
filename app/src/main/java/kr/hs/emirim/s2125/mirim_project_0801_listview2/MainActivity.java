@@ -1,7 +1,9 @@
 package kr.hs.emirim.s2125.mirim_project_0801_listview2;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,9 +32,19 @@ public class MainActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(btnAddListener);
         listv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                items.remove(i);
-                adapter.notifyDataSetChanged();
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long l) {
+                AlertDialog.Builder dlg= new AlertDialog.Builder(MainActivity.this);
+                dlg.setTitle("삭제");
+                dlg.setMessage("정말로 삭제하시겠습니까?");
+                dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        items.remove(index);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+                dlg.setNegativeButton("취소",null);
+                dlg.show();
                 return false;
             }
         });
@@ -42,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
             items.add(edit1.getText().toString());
             adapter.notifyDataSetChanged();
+            edit1.setText("");
         }
     };
 }
